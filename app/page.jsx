@@ -3,10 +3,12 @@
 import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (mapRef.current) return;
@@ -84,12 +86,21 @@ export default function Home() {
           .setLngLat(e.lngLat)
           .setHTML(
             `
-            <strong>${props.shape1}</strong><br/>
-            Zila: ${props.shape2}<br/>
-            Upazila: ${props.shape3}
+            <strong>${props.shape4}</strong><br/>
+            Upazila: ${props.shape3}<br/>
+            District: ${props.shape2}<br/>
+            Division: ${props.shape1 ?? "—"}<br/>
+            <span style="font-size:11px;color:#888;margin-top:4px;display:block">Click to view details</span>
           `,
           )
           .addTo(map);
+      });
+
+      map.on("click", "union-fill", (e) => {
+        const props = e.features[0].properties;
+        const upazilaId = props.gid;
+
+        router.push(`/upazila/${upazilaId}`);
       });
 
       map.on("mouseleave", "union-fill", () => {
