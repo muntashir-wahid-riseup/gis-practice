@@ -70,11 +70,17 @@ export default function Home() {
       // Fit map to Bangladesh extent
       map.fitBounds(BANGLADESH_BOUNDS, { padding: 20, duration: 0 });
 
-      // Click event
-      map.on("click", "union-fill", (e) => {
-        const props = e.features[0].properties;
+      // Hover popup
+      const popup = new maplibregl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      });
 
-        new maplibregl.Popup()
+      map.on("mousemove", "union-fill", (e) => {
+        const props = e.features[0].properties;
+        map.getCanvas().style.cursor = "pointer";
+
+        popup
           .setLngLat(e.lngLat)
           .setHTML(
             `
@@ -86,13 +92,9 @@ export default function Home() {
           .addTo(map);
       });
 
-      // Cursor pointer
-      map.on("mouseenter", "union-fill", () => {
-        map.getCanvas().style.cursor = "pointer";
-      });
-
       map.on("mouseleave", "union-fill", () => {
         map.getCanvas().style.cursor = "";
+        popup.remove();
       });
     });
 
