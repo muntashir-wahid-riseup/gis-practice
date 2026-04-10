@@ -112,7 +112,7 @@ const UpazilaDetailsPage = async ({ params }) => {
             { label: "Upazila", value: shape3, icon: "🏘️" },
             { label: "Union", value: shape4, icon: "📍" },
             { label: "Country", value: "Bangladesh", icon: "🇧🇩" },
-            { label: "Admin Level", value: shapetype, icon: "🏛️" },
+            // { label: "Admin Level", value: shapetype, icon: "🏛️" },
           ].map((card) => (
             <div
               key={card.label}
